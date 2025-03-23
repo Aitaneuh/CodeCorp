@@ -25,8 +25,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+
   min-width: 320px;
   min-height: 100vh;
 }
@@ -89,8 +88,16 @@ button:focus-visible {
   margin: 0;
 }
 
+.github-container {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 
 .github-link {
+  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 5px;
