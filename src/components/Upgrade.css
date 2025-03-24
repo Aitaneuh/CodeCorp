@@ -1,0 +1,12 @@
+.upgrade button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.price {
+    margin-left: 10px;
+    font-weight: bold;
+}

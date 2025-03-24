@@ -23,7 +23,8 @@ a:hover {
   color: #535bf2;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   overflow: hidden;
@@ -88,6 +89,34 @@ button:focus-visible {
   }
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  max-width: 1000px;
+  margin: auto;
+  height: calc(100vh - 60px);
+}
+
+
+.stats {
+  flex: 1;
+  text-align: left;
+}
+
+.upgrades {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.upgrades button {
+  width: 200px;
+  text-align: center;
+}
 
 .header {
   display: flex;
@@ -97,7 +126,6 @@ button:focus-visible {
   background-color: #00000028;
   color: white;
 }
-
 
 .title {
   flex-grow: 1;
@@ -112,7 +140,6 @@ button:focus-visible {
   gap: 5px;
 }
 
-
 .github-link {
   margin-left: auto;
   display: flex;
@@ -124,11 +151,9 @@ button:focus-visible {
   font-size: 16px;
 }
 
-
 .github-icon {
   font-size: 20px;
 }
-
 
 .content {
   display: flex;
@@ -137,7 +162,6 @@ button:focus-visible {
   justify-content: center;
   height: calc(100vh - 60px);
 }
-
 
 .click-button {
   padding: 10px 20px;
