@@ -11,7 +11,7 @@ const Stats: React.FC<StatsProps> = ({ linesOfCode, autoClickers, language, rese
             <h2>Stats</h2>
             <p>Lines of Code Written: {linesOfCode}</p>
             <p>Lines of Code Available: {linesOfCode}</p>
-            <p>Money: {linesOfCode}</p>
+            <p>Money: {linesOfCode}$</p>
             <p>Auto Clickers: {autoClickers}</p>
             <p>Current Language: {language}</p>
             <br />
