@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import './Upgrade.css'
 
 interface UpgradeProps {
@@ -8,6 +8,8 @@ interface UpgradeProps {
     action: () => void;
     linesOfCode: number;
     setLinesOfCode: React.Dispatch<React.SetStateAction<number>>;
+    repetable: boolean;
+    purchasedUpgrades: string[];
 }
 
 const Upgrade: React.FC<UpgradeProps> = ({
@@ -17,24 +19,27 @@ const Upgrade: React.FC<UpgradeProps> = ({
     action,
     linesOfCode,
     setLinesOfCode,
+    repetable,
+    purchasedUpgrades
 }) => {
     const isUnlocked = linesOfCode >= unlockPrice;
+    const isPurchased = purchasedUpgrades.includes(label) && !repetable;
 
     useEffect(() => {
         if (isUnlocked) {
-            console.log(`Upgrade ${label} débloqué !`);
+
         }
     }, [isUnlocked, label]);
 
-    const handleUpgrade = () => {
-        if (linesOfCode >= price) {
+    const handleUpgrade = useCallback(() => {
+        if (linesOfCode >= price && (!isPurchased || repetable)) {
+            setLinesOfCode(prev => prev - price);
             action();
-            setLinesOfCode(linesOfCode - price);
         }
-    };
+    }, [linesOfCode, price, action, setLinesOfCode, isPurchased, repetable]);
 
     return (
-        isUnlocked && (
+        isUnlocked && !isPurchased && (
             <div className="upgrade">
                 <button onClick={handleUpgrade}>
                     {label}
