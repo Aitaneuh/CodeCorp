@@ -3,78 +3,89 @@ import ClickButton from "./components/ClickButton";
 import Header from "./components/Header";
 import Upgrades from "./components/Upgrades";
 import Stats from "./components/Stats";
+import Projects from "./components/Projects";
 
 const LOCAL_STORAGE_KEY = "codecorp_game_data";
 
 const App: React.FC = () => {
-  const [linesOfCode, setLinesOfCode] = useState<number>(0);
+  const [totalLinesOfCode, setTotalLinesOfCode] = useState<number>(0);
+  const [availableLinesOfCode, setAvailableLinesOfCode] = useState<number>(0);
+  const [money, setMoney] = useState<number>(0);
   const [autoClickers, setAutoClickers] = useState<number>(0);
   const [autoClickerPrice, setAutoClickerPrice] = useState<number>(10);
-  const [language, setLanguage] = useState<string>("Python");
+  const [language, setLanguage] = useState<string>("JavaScript");
   const [intervalTime, setIntervalTime] = useState<number>(1000);
 
   useEffect(() => {
     const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (savedData) {
-      const { savedLines, savedAutoClickers, savedLanguage } = JSON.parse(savedData);
-      setLinesOfCode(savedLines);
+      const { savedTotalLines, savedAvailableLines, savedMoney, savedAutoClickers, savedAutoClickerPrice, savedLanguage } = JSON.parse(savedData);
+      setTotalLinesOfCode(savedTotalLines);
+      setAvailableLinesOfCode(savedAvailableLines);
+      setMoney(savedMoney);
       setAutoClickers(savedAutoClickers);
+      setAutoClickerPrice(savedAutoClickerPrice);
       setLanguage(savedLanguage);
     }
   }, []);
 
   useEffect(() => {
     const dataToSave = {
-      savedLines: linesOfCode,
+      savedTotalLines: totalLinesOfCode,
+      savedAvailableLines: availableLinesOfCode,
+      savedMoney: money,
       savedAutoClickers: autoClickers,
+      savedAutoClickerPrice: autoClickerPrice,
       savedLanguage: language,
     };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataToSave));
-  }, [linesOfCode, autoClickers, language]);
+  }, [totalLinesOfCode, availableLinesOfCode, money, autoClickers, autoClickerPrice, language]);
 
   useEffect(() => {
     if (autoClickers > 0) {
       const interval = setInterval(() => {
-        setLinesOfCode(prev => prev + autoClickers);
+        setTotalLinesOfCode(prev => prev + autoClickers);
+        setAvailableLinesOfCode(prev => prev + autoClickers);
       }, intervalTime);
-
       return () => clearInterval(interval);
     }
   }, [autoClickers, intervalTime]);
 
+  const clickHandler = () => {
+    setTotalLinesOfCode(prev => prev + 1);
+    setAvailableLinesOfCode(prev => prev + 1);
+  };
+
   const buyAutoClicker = () => {
-    if (linesOfCode >= autoClickerPrice) {
+    if (availableLinesOfCode >= autoClickerPrice) {
       setAutoClickers(prev => prev + 1);
-      setLinesOfCode(prev => prev - autoClickerPrice);
+      setAvailableLinesOfCode(prev => prev - autoClickerPrice);
       setAutoClickerPrice(prev => Math.floor(prev * 1.5));
+    }
+  };
+
+  const completeProject = (cost: number, reward: number) => {
+    if (availableLinesOfCode >= cost) {
+      setAvailableLinesOfCode(prev => prev - cost);
+      setMoney(prev => prev + reward);
     }
   };
 
   const switchLanguage = (newLanguage: string) => {
     setLanguage(newLanguage);
-
     if (newLanguage === "Ruby") {
       setIntervalTime(500);
     } else if (newLanguage === "PHP") {
       setIntervalTime(333);
-    } else if (newLanguage === "Dart") {
-      setIntervalTime(250);
-    } else if (newLanguage === "Java") {
-      setIntervalTime(125);
-    } else if (newLanguage === "C++") {
-      setIntervalTime(75);
-    } else if (newLanguage === "C") {
-      setIntervalTime(40);
-    } else if (newLanguage === "Assembly") {
-      setIntervalTime(10);
     } else {
       setIntervalTime(1000);
     }
   };
 
-  // Fonction de reset
   const resetGame = () => {
-    setLinesOfCode(0);
+    setTotalLinesOfCode(0);
+    setAvailableLinesOfCode(0);
+    setMoney(0);
     setAutoClickers(0);
     setAutoClickerPrice(10);
     setLanguage("JavaScript");
@@ -87,24 +98,29 @@ const App: React.FC = () => {
       <Header />
 
       <div className="container">
-        <Stats
-          linesOfCode={linesOfCode}
-          autoClickers={autoClickers}
-          language={language}
-          resetGame={resetGame}
-        />
-
-        <ClickButton onClick={() => setLinesOfCode(prev => prev + 1)} />
-
-        <Upgrades
-          linesOfCode={linesOfCode}
-          autoClickers={autoClickers}
-          setLinesOfCode={setLinesOfCode}
-          setAutoClickers={setAutoClickers}
-          setLanguage={switchLanguage}
-          autoClickerPrice={autoClickerPrice}
-          buyAutoClicker={buyAutoClicker}
-        />
+        <div className="top-section">
+          <Stats
+            totalLinesOfCode={totalLinesOfCode}
+            availableLinesOfCode={availableLinesOfCode}
+            money={money}
+            autoClickers={autoClickers}
+            language={language}
+            resetGame={resetGame}
+          />
+          <div className="centerX">
+          <ClickButton onClick={clickHandler} />
+          </div>
+          <Upgrades
+            linesOfCode={availableLinesOfCode}
+            autoClickers={autoClickers}
+            setLinesOfCode={setAvailableLinesOfCode}
+            setAutoClickers={setAutoClickers}
+            setLanguage={switchLanguage}
+            autoClickerPrice={autoClickerPrice}
+            buyAutoClicker={buyAutoClicker}
+          />
+        </div>
+        <Projects availableLinesOfCode={availableLinesOfCode} completeProject={completeProject} />
       </div>
     </div>
   );
