@@ -14,17 +14,19 @@ const App: React.FC = () => {
   const [autoClickers, setAutoClickers] = useState<number>(0);
   const [autoClickerPrice, setAutoClickerPrice] = useState<number>(10);
   const [language, setLanguage] = useState<string>("Python");
+  const [multiplier, setMultiplier] = useState<number>(1); // Multiplier appliqué aux lignes générées
 
   useEffect(() => {
     const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (savedData) {
-      const { savedTotalLines, savedAvailableLines, savedMoney, savedAutoClickers, savedAutoClickerPrice, savedLanguage } = JSON.parse(savedData);
+      const { savedTotalLines, savedAvailableLines, savedMoney, savedAutoClickers, savedAutoClickerPrice, savedLanguage, savedMultiplier } = JSON.parse(savedData);
       setTotalLinesOfCode(savedTotalLines);
       setAvailableLinesOfCode(savedAvailableLines);
       setMoney(savedMoney);
       setAutoClickers(savedAutoClickers);
       setAutoClickerPrice(savedAutoClickerPrice);
       setLanguage(savedLanguage);
+      setMultiplier(savedMultiplier);
     }
   }, []);
 
@@ -36,14 +38,15 @@ const App: React.FC = () => {
       savedAutoClickers: autoClickers,
       savedAutoClickerPrice: autoClickerPrice,
       savedLanguage: language,
+      savedMultiplier: multiplier,
     };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataToSave));
-  }, [totalLinesOfCode, availableLinesOfCode, money, autoClickers, autoClickerPrice, language]);
+  }, [totalLinesOfCode, availableLinesOfCode, money, autoClickers, autoClickerPrice, language, multiplier]);
 
   useEffect(() => {
     if (autoClickers > 0) {
       const interval = setInterval(() => {
-        const linesPerSecond = autoClickers * 1;
+        const linesPerSecond = autoClickers * multiplier;
         const linesPerTick = linesPerSecond / 50;
 
         setTotalLinesOfCode(prev => prev + linesPerTick);
@@ -52,8 +55,7 @@ const App: React.FC = () => {
 
       return () => clearInterval(interval);
     }
-  }, [autoClickers]);
-
+  }, [autoClickers, multiplier]);
 
   const clickHandler = () => {
     setTotalLinesOfCode(prev => prev + 1);
@@ -78,18 +80,17 @@ const App: React.FC = () => {
   const switchLanguage = (newLanguage: string) => {
     setLanguage(newLanguage);
 
-    let multiplier = 1;
-    if (newLanguage === "Ruby") multiplier = 2;
-    if (newLanguage === "PHP") multiplier = 3;
-    if (newLanguage === "Dart") multiplier = 4;
-    if (newLanguage === "Java") multiplier = 5;
-    if (newLanguage === "C++") multiplier = 6;
-    if (newLanguage === "C") multiplier = 7;
-    if (newLanguage === "Assembly") multiplier = 8;
+    let newMultiplier = 1;
+    if (newLanguage === "Ruby") newMultiplier = 2;
+    if (newLanguage === "PHP") newMultiplier = 3;
+    if (newLanguage === "Dart") newMultiplier = 4;
+    if (newLanguage === "Java") newMultiplier = 5;
+    if (newLanguage === "C++") newMultiplier = 6;
+    if (newLanguage === "C") newMultiplier = 7;
+    if (newLanguage === "Assembly") newMultiplier = 8;
 
-    setAutoClickers(prev => prev * multiplier);
+    setMultiplier(newMultiplier);
   };
-
 
   const resetGame = () => {
     setTotalLinesOfCode(0);
@@ -98,6 +99,7 @@ const App: React.FC = () => {
     setAutoClickers(0);
     setAutoClickerPrice(10);
     setLanguage("Python");
+    setMultiplier(1);
     localStorage.removeItem(LOCAL_STORAGE_KEY);
   };
 

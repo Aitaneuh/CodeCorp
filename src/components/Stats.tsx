@@ -14,7 +14,7 @@ const Stats: React.FC<StatsProps> = ({ totalLinesOfCode, availableLinesOfCode, m
             <p>Total Lines of Code Written: {Math.floor(totalLinesOfCode)}</p>
             <p>Lines of Code Available: {Math.floor(availableLinesOfCode)}</p>
             <p>Money: {money}$</p>
-            <p>Auto Clickers: {autoClickers}</p>
+            {autoClickers > 0 && <p>while (true) loops: {autoClickers}</p>}
             <p>Current Language: {language}</p>
             <br />
             <button onClick={resetGame} className="reset-button">Reset Game</button>
