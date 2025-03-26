@@ -13,8 +13,7 @@ const App: React.FC = () => {
   const [money, setMoney] = useState<number>(0);
   const [autoClickers, setAutoClickers] = useState<number>(0);
   const [autoClickerPrice, setAutoClickerPrice] = useState<number>(10);
-  const [language, setLanguage] = useState<string>("JavaScript");
-  const [intervalTime, setIntervalTime] = useState<number>(1000);
+  const [language, setLanguage] = useState<string>("Python");
 
   useEffect(() => {
     const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -44,12 +43,17 @@ const App: React.FC = () => {
   useEffect(() => {
     if (autoClickers > 0) {
       const interval = setInterval(() => {
-        setTotalLinesOfCode(prev => prev + autoClickers);
-        setAvailableLinesOfCode(prev => prev + autoClickers);
-      }, intervalTime);
+        const linesPerSecond = autoClickers * 1;
+        const linesPerTick = linesPerSecond / 50;
+
+        setTotalLinesOfCode(prev => prev + linesPerTick);
+        setAvailableLinesOfCode(prev => prev + linesPerTick);
+      }, 20);
+
       return () => clearInterval(interval);
     }
-  }, [autoClickers, intervalTime]);
+  }, [autoClickers]);
+
 
   const clickHandler = () => {
     setTotalLinesOfCode(prev => prev + 1);
@@ -73,14 +77,19 @@ const App: React.FC = () => {
 
   const switchLanguage = (newLanguage: string) => {
     setLanguage(newLanguage);
-    if (newLanguage === "Ruby") {
-      setIntervalTime(500);
-    } else if (newLanguage === "PHP") {
-      setIntervalTime(333);
-    } else {
-      setIntervalTime(1000);
-    }
+
+    let multiplier = 1;
+    if (newLanguage === "Ruby") multiplier = 2;
+    if (newLanguage === "PHP") multiplier = 3;
+    if (newLanguage === "Dart") multiplier = 4;
+    if (newLanguage === "Java") multiplier = 5;
+    if (newLanguage === "C++") multiplier = 6;
+    if (newLanguage === "C") multiplier = 7;
+    if (newLanguage === "Assembly") multiplier = 8;
+
+    setAutoClickers(prev => prev * multiplier);
   };
+
 
   const resetGame = () => {
     setTotalLinesOfCode(0);
@@ -88,8 +97,7 @@ const App: React.FC = () => {
     setMoney(0);
     setAutoClickers(0);
     setAutoClickerPrice(10);
-    setLanguage("JavaScript");
-    setIntervalTime(1000);
+    setLanguage("Python");
     localStorage.removeItem(LOCAL_STORAGE_KEY);
   };
 
@@ -108,7 +116,7 @@ const App: React.FC = () => {
             resetGame={resetGame}
           />
           <div className="centerX">
-          <ClickButton onClick={clickHandler} />
+            <ClickButton onClick={clickHandler} />
           </div>
           <Upgrades
             linesOfCode={availableLinesOfCode}

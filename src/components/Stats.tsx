@@ -11,8 +11,8 @@ const Stats: React.FC<StatsProps> = ({ totalLinesOfCode, availableLinesOfCode, m
     return (
         <div className="stats">
             <h2>Stats</h2>
-            <p>Total Lines of Code Written: {totalLinesOfCode}</p>
-            <p>Lines of Code Available: {availableLinesOfCode}</p>
+            <p>Total Lines of Code Written: {Math.floor(totalLinesOfCode)}</p>
+            <p>Lines of Code Available: {Math.floor(availableLinesOfCode)}</p>
             <p>Money: {money}$</p>
             <p>Auto Clickers: {autoClickers}</p>
             <p>Current Language: {language}</p>
