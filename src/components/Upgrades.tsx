@@ -16,6 +16,7 @@ const Upgrades: React.FC<UpgradesProps> = ({
     linesOfCode,
     setLinesOfCode,
     setAutoClickers,
+    autoClickerPrice,
     setLanguage
 }) => {
     const [purchasedUpgrades] = useState<string[]>([]);
@@ -27,7 +28,7 @@ const Upgrades: React.FC<UpgradesProps> = ({
     const upgradesList = [
         {
             label: "while (true) loop",
-            price: 10,
+            price: autoClickerPrice,
             unlockPrice: 10,
             action: buyAutoClicker,
             repetable: true

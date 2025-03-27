@@ -66,7 +66,7 @@ const App: React.FC = () => {
     if (availableLinesOfCode >= autoClickerPrice) {
       setAutoClickers(prev => prev + 1);
       setAvailableLinesOfCode(prev => prev - autoClickerPrice);
-      setAutoClickerPrice(prev => Math.floor(prev * 1.5));
+      setAutoClickerPrice(prev => prev * 1.5);
     }
   };
 
