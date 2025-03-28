@@ -14,7 +14,7 @@ const App: React.FC = () => {
   const [autoClickers, setAutoClickers] = useState<number>(0);
   const [autoClickerPrice, setAutoClickerPrice] = useState<number>(10);
   const [language, setLanguage] = useState<string>("Python");
-  const [multiplier, setMultiplier] = useState<number>(1); // Multiplier appliqué aux lignes générées
+  const [multiplier, setMultiplier] = useState<number>(1);
 
   useEffect(() => {
     const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);

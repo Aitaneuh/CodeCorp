@@ -1,7 +1,6 @@
 import Upgrade from "./Upgrade";
 import { useState, useCallback } from "react";
 
-// Définir le type UpgradesProps
 interface UpgradesProps {
     linesOfCode: number;
     autoClickers: number;
