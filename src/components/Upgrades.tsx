@@ -76,7 +76,7 @@ const Upgrades: React.FC<UpgradesProps> = ({
             repetable: false
         },
         {
-            label: "Switch to Assembly (God Tier)",
+            label: "Switch to Assembly",
             price: 100000000000,
             unlockPrice: 100000000000,
             action: () => setLanguage("Assembly"),
